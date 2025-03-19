@@ -1,0 +1,35 @@
+---
+title: "Inequality and standard of living"
+author: "Lowell Monis"
+tag: "Inequality"
+summary: "If US inequality were like Germany's, everyone would have a good standard of living."
+date: "March 24 2024"
+figure_path: placeholder_figure.jpeg
+output:
+  pdf_document:
+    template: econ_template.tex
+---
+
+*Tip from last year's students*: As soon as you get this file, knit it as-is. That will give you plenty of time to debug any compilation/LaTeX issues.
+
+You'll have a separate Rmd file where you'll do your analysis and create your figures. Then you'll save out the figure to a file and include it here, along with your writeup.
+
+You'll replace this text with your own text. You can use Markdown to format your text. Some things to note about this template: 
+
+You'll need to ensure that `econ_template.tex` *and* `spartan.jpg` are both in the same folder as this file.
+
+Above, in the block of code inside the `---` marks, you'll see `placeholder_figure.jpeg`. You'll replace that with the name of your own figure file that you produce. Make sure that the file ending matches: you'll probably have a `.png` or `.pdf` file. So if I ran my analysis code to generate a figure called `figure_397_ccc.png`, I'd replace `figure_path: placeholder_figure.jpeg` with `figure_path: figure_397_ccc.png`. Your main figure should include 2-3 figures, compiled neatly into a single figure using patchwork. You'll need to experiment to get the layout and size right. You might need to go through a few steps of saving the combined patchwork plot out (using `ggsave()`) and opening up the image to make sure it looks right.
+
+\includegraphics[width=0.95\columnwidth]{owl.jpg}
+
+
+Make sure you change the "title" and "tag" fields to match your content. It's okay to have some fun with the title! The "summary" text goes in bold at the beginning of your document and should do what it says: summarize the main takeaway of your piece in a sentence.
+
+If you want to include an extra, small figure inside the text (very optional!!), you can do that, too. Replace `owl.jpg` with your second small figure. You'll need to experiment with where you place the `\includegraphics` command to get the placement right. If you don't want to include another figure, just delete the `\includegraphics` line.
+
+Here's some filler text from CCC's Github to round out the page:
+
+"We strive to update this data set weekly, on Wednesdays not later than 4 PM Eastern time, with exceptions around holidays and ends of months. Please note that, while the raw data are updated on a rolling basis, there is some lag between the appearance of a news story or social-media post about an event (or the submission of a form to CCC) and the addition of a complete record to CCC's Google Sheets. CCC strives to keep that interval as short as possible, but the project operates on a shoestring budget, so periods of higher protest activity can make for longer delays."
+
+
+
