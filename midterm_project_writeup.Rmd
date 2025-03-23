@@ -3,7 +3,7 @@ title: "Inequality and standard of living"
 author: "Lowell Monis"
 tag: "Inequality"
 summary: "If US inequality were like Germany's, everyone would have a good standard of living."
-date: "March 24 2024"
+date: "March 24, 2024"
 figure_path: placeholder_figure.jpeg
 output:
   pdf_document:

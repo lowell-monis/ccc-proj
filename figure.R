@@ -24,14 +24,16 @@ ccc2 <- ccc2 %>%
   select(-starts_with("source"))
 ccc <- bind_rows(ccc1, ccc2)
 
-View(ccc)
+View(ccc_2018_type)
 
 # extracting date
 
 ccc <- ccc %>%
   separate_wider_delim(date,
                        delim="-",
-                       names=c('yyyy', 'mm', 'dd'))
+                       names=c('yyyy', 'mm', 'dd')) %>%
+  separate_longer_delim(issues, delim=";") %>%
+  separate_longer_delim(type, delim=";")
 
 ccc_fl <- ccc %>%
   filter(as.numeric(yyyy)==2020, as.numeric(mm)>=5) %>%
@@ -43,3 +45,11 @@ ccc_fl %>%
   ggplot(aes(x=dd,y=property_damage)) +
   geom_point()
  
+ccc_2018 <- ccc %>%
+  filter(as.numeric(yyyy)==2018)
+
+ccc_2018_type<- ccc_2018 %>%
+  group_by(type) %>%
+  summarise(count_type = n())
+  ggplot(aes(x=type)) +
+  geom_bar()
