@@ -37,3 +37,9 @@ ccc_fl <- ccc %>%
   filter(as.numeric(yyyy)==2020, as.numeric(mm)>=5) %>%
   filter_keywords(claims, c('floyd', 'brutality', 'police', 'racism'))
 View(ccc_fl)
+
+ccc_fl %>%
+  group_by(mm, dd) %>%
+  ggplot(aes(x=dd,y=property_damage)) +
+  geom_point()
+ 
