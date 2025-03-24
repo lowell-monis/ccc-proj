@@ -1,35 +1,23 @@
 ---
-title: "Inequality and standard of living"
+title: "Midterm momentum"
 author: "Lowell Monis"
-tag: "Inequality"
-summary: "If US inequality were like Germany's, everyone would have a good standard of living."
+tag: "Elections"
+summary: "Protest dynamics serve as a powerful indicator of the national mood, offering a lens to predict electoral outcomes."
 date: "March 24, 2024"
-figure_path: placeholder_figure.jpeg
+figure_path: figure.png
 output:
   pdf_document:
     template: econ_template.tex
 ---
 
-*Tip from last year's students*: As soon as you get this file, knit it as-is. That will give you plenty of time to debug any compilation/LaTeX issues.
+<!-- I would like the extra credit. -->
 
-You'll have a separate Rmd file where you'll do your analysis and create your figures. Then you'll save out the figure to a file and include it here, along with your writeup.
+Midterm elections in the U.S. often hinge on the national mood, with the party out of power typically gaining momentum. Protest activity---whether left- or right-leaning---provides a real-time pulse of this sentiment. In 2018, a surge in anti-Trump protests foreshadowed a Democratic wave. By 2022, however, the expected Republican advantage was upended by a seismic shift in mobilization patterns.
 
-You'll replace this text with your own text. You can use Markdown to format your text. Some things to note about this template: 
+Historical trends suggested a GOP landslide in 2022, fueled by economic discontent and Biden’s low approval ratings. Yet, it is widely regarded that the Supreme Court’s reversal of \textit{Roe v. Wade} disrupted this trajectory. Abortion rights protests erupted nationwide, with left-leaning mobilization dwarfing right-leaning activity. The data reveals a stark contrast: while 2018 protests were diffuse (targeting immigration, healthcare, and race), 2022’s movement was laser-focused, galvanizing women and young voters.
 
-You'll need to ensure that `econ_template.tex` *and* `spartan.jpg` are both in the same folder as this file.
+The 2018 midterms demonstrated how protest energy translates into electoral gains. Districts with high protest activity saw elevated Democratic turnout, flipping 41 House seats. In 2022, despite lower overall protest volume post-COVID, abortion-related protests became the critical mobilizing force. Swing states like Michigan and Pennsylvania recorded record midterm turnout, with abortion-related ballot proposals concerning sleeper laws driving engagement.
 
-Above, in the block of code inside the `---` marks, you'll see `placeholder_figure.jpeg`. You'll replace that with the name of your own figure file that you produce. Make sure that the file ending matches: you'll probably have a `.png` or `.pdf` file. So if I ran my analysis code to generate a figure called `figure_397_ccc.png`, I'd replace `figure_path: placeholder_figure.jpeg` with `figure_path: figure_397_ccc.png`. Your main figure should include 2-3 figures, compiled neatly into a single figure using patchwork. You'll need to experiment to get the layout and size right. You might need to go through a few steps of saving the combined patchwork plot out (using `ggsave()`) and opening up the image to make sure it looks right.
+The GOP’s anticipated "red wave" collapsed under the weight of abortion backlash. Protest data from 2022 shows a large spike in demonstrations regarding "abortion", "healthcare", and "women's rights" after the Dobbs decision---a surge that correlated with Democratic overperformance. In fact, most of these issues were not even close to the top 10 protest issues of 2018, with any attributions to attempts to repeal the Affordable Care Act subsiding after the failed 2017 repeal. Right-leaning mobilization, which was largely missing in 2018 was present in 2022, but was not as large as the amount of left-leaning mobilization, which could be predictive of the impending dampening effect on the incoming GOP wave that upended senate races completely and dulled the House majority to one of the narrowest since 2000. The margins of victory in the elections are also visible in the number of protests in favor of the views of either side of the aisle: a blowout victory for the left and progressives in 2018, and divided government with ungovernable majorities in 2022.
 
-\includegraphics[width=0.95\columnwidth]{owl.jpg}
-
-
-Make sure you change the "title" and "tag" fields to match your content. It's okay to have some fun with the title! The "summary" text goes in bold at the beginning of your document and should do what it says: summarize the main takeaway of your piece in a sentence.
-
-If you want to include an extra, small figure inside the text (very optional!!), you can do that, too. Replace `owl.jpg` with your second small figure. You'll need to experiment with where you place the `\includegraphics` command to get the placement right. If you don't want to include another figure, just delete the `\includegraphics` line.
-
-Here's some filler text from CCC's Github to round out the page:
-
-"We strive to update this data set weekly, on Wednesdays not later than 4 PM Eastern time, with exceptions around holidays and ends of months. Please note that, while the raw data are updated on a rolling basis, there is some lag between the appearance of a news story or social-media post about an event (or the submission of a form to CCC) and the addition of a complete record to CCC's Google Sheets. CCC strives to keep that interval as short as possible, but the project operates on a shoestring budget, so periods of higher protest activity can make for longer delays."
-
-
-
+The 2018 and 2022 cycles reveal a consistent pattern: mass mobilization reflects---and may even shape---electoral outcomes. While the out-party typically benefits from midterm discontent, ideological mobilization can override historical trends. As protests grow increasingly issue-specific, their predictive power sharpens.  For analysts, tracking protest valence and volume may offer a clearer window into the national mood than polls alone.
