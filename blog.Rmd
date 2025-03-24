@@ -1,0 +1,51 @@
+---
+title: "Midterm Momentum"
+subtitle: "Optional Subtitle Providing Additional Context"
+author: 
+  - name: "Lowell Monis"
+  - affiliation: "Michigan State University"
+  - email: "monislow@msu.edu"
+
+date: "`r Sys.Date()`"
+# date: "2024-03-24"  # Alternative: Manually specify date
+
+output:
+  html_document:
+    theme: "readable"  # Choose from default themes like default, cerulean, journal, flatly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, yeti
+    highlight: "tango"  # Code syntax highlighting style (default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, breezedark, textmate)
+    
+    # Layout and Formatting
+    toc: true  # Table of Contents
+    toc_depth: 3  # Depth of headers to include in TOC
+    toc_float: 
+      collapsed: false  # Makes TOC float alongside content
+      smooth_scroll: true  # Smooth scrolling to TOC sections
+    
+    # Code Handling
+    code_folding: "show"  # Options: "none", "show", "hide"
+    code_download: true  # Adds a download button for R code
+    
+    # Additional Rendering Options
+    self_contained: true  # Creates a single HTML file with all dependencies
+    number_sections: false  # Adds numeric prefixes to sections
+    df_print: "paged"  # How data frames are printed (paged, default, tibble)
+
+# Bibliography and Citations (Optional)
+#bibliography: references.bib  # Path to your BibTeX file
+#csl: apa.csl  # Citation Style Language file
+
+# Advanced Customization
+params:
+  version: 1.0
+# data_source: "path/to/data"
+
+# Supplementary Metadata
+tags: 
+  - "data-science"
+  - "r-markdown"
+  - "blogging"
+
+keywords:
+  - "reproducible research"
+  - "data visualization"
+---
