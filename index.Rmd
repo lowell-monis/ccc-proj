@@ -1,13 +1,12 @@
 ---
 title: "Midterm Momentum"
-subtitle: "Optional Subtitle Providing Additional Context"
+subtitle: "Can Grassroots Energy Override Historical Trends?"
 author: 
   - name: "Lowell Monis"
   - affiliation: "Michigan State University"
   - email: "monislow@msu.edu"
 
-date: "`r Sys.Date()`"
-# date: "2024-03-24"  # Alternative: Manually specify date
+date: "March 31, 2025"
 
 output:
   html_document:
@@ -49,3 +48,5 @@ keywords:
   - "reproducible research"
   - "data visualization"
 ---
+
+Or more importantly, can street mobilization be an electoral weathervane?
