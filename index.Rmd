@@ -2,16 +2,15 @@
 title: "Midterm Momentum"
 subtitle: "Can Grassroots Energy Override Historical Trends?"
 author: 
-  - name: "Lowell Monis"
-  - affiliation: "Michigan State University"
-  - email: "monislow@msu.edu"
+  - name: "Lowell Monis^[Michigan State University, monislow@msu.edu]"
 
 date: "March 31, 2025"
 
 output:
-  html_document:
-    theme: "readable"  # Choose from default themes like default, cerulean, journal, flatly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, yeti
+  html_document: 
+    theme: "lumen"  # Choose from default themes like default, cerulean, journal, flatly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, yeti
     highlight: "tango"  # Code syntax highlighting style (default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, breezedark, textmate)
+    
     
     toc: true 
     toc_depth: 3
@@ -78,4 +77,310 @@ download_link(
   icon = "fa-solid fa-download",
   self_contained = TRUE
 )
+```
+
+```{r echo=FALSE}
+library(ggplot2)
+library(patchwork)
+library(ggthemes)
+library(tidyverse)
+library(tidytext)
+library(patchwork)
+
+ccc1 <- read.csv("data/ccc_compiled_20172020.csv")
+ccc1 <- ccc1 %>% 
+  select(-starts_with("source"))
+
+ccc2 <- read.csv("data/ccc_compiled_20212024.csv")
+ccc2$issues <- ccc2$issue_tags
+ccc2 <- ccc2 %>% 
+  select(-starts_with("source"))
+ccc <- bind_rows(ccc1, ccc2)
+
+
+ccc <- ccc %>%
+  separate_wider_delim(date,
+                       delim="-",
+                       names=c('yyyy', 'mm', 'dd')) %>%
+  separate_longer_delim(issues, delim=";") %>%
+  separate_longer_delim(type, delim=";")
+
+issue_counts <- ccc %>%
+  filter(yyyy %in% c("2018", "2022"), !is.na(valence), issues != "") %>%
+  count(yyyy, issues, valence) %>%
+  group_by(yyyy, issues) %>%
+  summarise(n = sum(n), .groups = 'drop') %>%
+  arrange(desc(n))
+
+top_issues_2018 <- issue_counts %>%
+  filter(yyyy == "2018") %>%
+  slice_max(order_by = n, n = 10) %>%
+  pull(issues)
+
+top_issues_2022 <- issue_counts %>%
+  filter(yyyy == "2022") %>%
+  slice_max(order_by = n, n = 10) %>%
+  pull(issues)
+
+issue_counts_filtered <- ccc %>%
+  filter((yyyy == "2018" & issues %in% top_issues_2018) | 
+           (yyyy == "2022" & issues %in% top_issues_2022), 
+         !is.na(valence)) %>%
+  count(yyyy, issues, valence)
+
+midterm_data1 <- ccc %>%
+  filter(yyyy == "2018", !is.na(valence)) %>%
+  mutate(date = as.Date(paste(yyyy, mm, dd, sep = "-")))
+
+midterm_data2 <- ccc %>%
+  filter(yyyy == "2022", !is.na(valence)) %>%
+  mutate(date = as.Date(paste(yyyy, mm, dd, sep = "-")))
+
+data2024 <- ccc %>%
+  filter(yyyy == "2024", !is.na(valence)) %>%
+  mutate(date = as.Date(paste(yyyy, mm, dd, sep = "-")))
+
+data2020 <- ccc %>%
+  filter(yyyy == "2020", !is.na(valence)) %>%
+  mutate(date = as.Date(paste(yyyy, mm, dd, sep = "-")))
+
+custom_theme <- theme_minimal(base_size = 12) +
+  theme(
+    text = element_text(family = "serif", color = "#333333"),
+    plot.background = element_rect(fill = "#FAFAFA", color = NA),
+    panel.background = element_rect(fill = "#FAFAFA", color = NA),
+    panel.grid = element_blank(),
+    axis.line = element_line(color = "#666666", linewidth = 0.5),
+    plot.title = element_text(size = 15, face = "bold", color = "#222222"),
+    axis.title = element_text(size = 10, color = "#444444"),
+    axis.text = element_text(size = 10, color = "#555555"),
+    legend.position = "bottom",
+    legend.direction = "horizontal",
+    strip.text = element_text(color = "#333333", face = "bold")
+  )
+
+valence_colors <- c("0" = "#E69F00", 
+                    "1" = "#0072B2",  
+                    "2" = "#D55E00")  
+
+max_count1 <- max(table(midterm_data1$date, midterm_data1$valence))
+max_count2 <- max(table(midterm_data2$date, midterm_data2$valence))
+y_max <- max(max_count1, max_count2) * 1.1
+
+issue_plot <- ggplot(issue_counts_filtered, 
+                     aes(x = reorder_within(issues, n, yyyy), 
+                         y = n, 
+                         fill = factor(valence))) +
+  geom_bar(stat = "identity", position = "stack", width = 0.7) +
+  facet_wrap(~ yyyy, scales = "free_y") +
+  scale_fill_manual(values = valence_colors,
+                    labels = c("0" = "Neither/Other", 
+                               "1" = "Left-wing", 
+                               "2" = "Right-wing")) +
+  scale_x_reordered() +
+  coord_flip() +
+  labs(title = "There has been a significant shift in issues alongside changes \nin partisan involvement reflective of the national mood in protests.",
+       x = "Issue",
+       y = "Number of Events",
+       fill = "Political Alignment",
+       caption = "Data source: Crowd Counting Consortium, crowdcounting.org, accessed March 2025") +
+  custom_theme +
+  theme(panel.grid.major.y = element_blank()) 
+
+
+
+midterm2018 <- ggplot(midterm_data1, aes(x = date, color = factor(valence))) +
+  geom_line(stat = "count", linewidth = 0.8) +
+  geom_vline(xintercept = as.Date("2018-11-06"), linetype = "dashed", 
+             color = "#333333", linewidth = 0.5) +
+  annotate("text", x = as.Date("2018-11-02"), 
+           y = 4000, 
+           label = "Election Day", 
+           color = "#222222", 
+           angle = 90,
+           hjust = -0.2, 
+           vjust = 0.2, 
+           size = 3.8,
+           family='serif') +
+  annotate("rect", 
+           xmin = as.Date("2018-02-14"), 
+           xmax = as.Date("2018-04-22"),
+           ymin = 0, 
+           ymax = Inf,
+           fill = "#F39C12", 
+           alpha = 0.15) +
+  annotate("text", 
+           x = as.Date("2018-04-28"), 
+           y = 9400,
+           label = "Parkland Shooting Fallout", 
+           color = "#222222", 
+           size = 3.5, 
+           angle = 0,  
+           hjust = 1.1,
+           vjust = 0.5,
+           family = "serif") +
+  scale_color_manual(values = valence_colors) +
+  scale_y_continuous(limits = c(0, y_max)) +
+  labs(title = "2018 saw a lopsided number of left-leaning political events.",
+       x = "Date",
+       y = "Number of Protests",
+       caption = "Data source: Crowd Counting Consortium, crowdcounting.org, accessed March 2025") +
+  custom_theme +
+  theme(legend.position = "none", 
+        axis.title.x = element_blank())
+
+
+midterm2022 <- ggplot(midterm_data2, aes(x = date, color = factor(valence))) +
+  geom_line(stat = "count", size = 0.7) +
+  geom_vline(xintercept = as.Date("2022-06-24"), linetype = "dashed", color = "black", size=0.5) +
+  annotate("text", x = as.Date("2022-06-20"), y = 4000, label = "Dobbs Decision", 
+           color = "#222222", 
+           angle = 90,
+           hjust = -0.2,
+           vjust = 0.2,
+           size = 3.8,
+           family='serif') +
+  geom_vline(xintercept = as.Date("2022-11-08"), linetype = "dashed", color = "black", size=0.5) +
+  annotate("text", x = as.Date("2022-11-04"), y = 4000, label = "Election Day", color = "#222222", 
+           angle = 90,
+           hjust = -0.2, 
+           vjust = 0.2, 
+           size = 3.8,
+           family='serif')  +
+  scale_color_manual(values = valence_colors) +
+  scale_y_continuous(limits = c(0, y_max)) +
+  labs(title = "There were a smaller number of events in 2022, with disparities between \nleft- and right-wing events reduced but still favoring the left.",
+       x = "Date",
+       y = "Number of Protests",
+       caption = "Data source: Crowd Counting Consortium, crowdcounting.org, accessed March 2025") +
+  custom_theme +
+  theme(legend.position = "none", 
+        axis.title.x = element_blank())
+
+election2020 <- ggplot(data2020, aes(x = date, color = factor(valence))) +
+  geom_line(stat = "count", size = 0.7) +
+  geom_vline(xintercept = as.Date("2020-11-03"), linetype = "dashed", color = "black", size=0.5) +
+  annotate("text", x = as.Date("2020-10-31"), y = 4000, label = "Election Day", color = "#222222", 
+           angle = 90,
+           hjust = -0.2, 
+           vjust = 0.2, 
+           size = 3.8,
+           family='serif')  +
+  geom_vline(xintercept = as.Date("2020-05-01"), linetype = "dashed", color = "black", size=0.5) +
+  annotate("text", x = as.Date("2020-04-26"), y = 1000, label = "Anti-Lockdown + May Day Protests", color = "#222222", 
+           angle = 90,
+           hjust = -0.2, 
+           vjust = 0.2, 
+           size = 3.8,
+           family='serif')  +
+  geom_vline(xintercept = as.Date("2020-05-26"), linetype = "dashed", color = "black", size=0.5) +
+  annotate("text", x = as.Date("2020-05-22"), y = 2000, label = "The Killing of George Floyd", color = "#222222", 
+           angle = 90,
+           hjust = -0.2, 
+           vjust = 0.2, 
+           size = 3.8,
+           family='serif')  +
+  scale_color_manual(values = valence_colors) +
+  scale_y_continuous(limits = c(0, y_max)) +
+  labs(title = "There were a smaller number of events in 2022, with disparities between \nleft- and right-wing events reduced but still favoring the left.",
+       x = "Date",
+       y = "Number of Protests",
+       caption = "Data source: Crowd Counting Consortium, crowdcounting.org, accessed March 2025") +
+  custom_theme +
+  theme(legend.position = "none", 
+        axis.title.x = element_blank())
+
+election2024 <- ggplot(data2024, aes(x = date, color = factor(valence))) +
+  geom_line(stat = "count", size = 0.7) +
+  geom_vline(xintercept = as.Date("2024-11-05"), linetype = "dashed", color = "black", size=0.5) +
+  annotate("text", x = as.Date("2024-11-01"), y = 4000, label = "Election Day", color = "#222222", 
+           angle = 90,
+           hjust = -0.2, 
+           vjust = 0.2, 
+           size = 3.8,
+           family='serif')  +
+  scale_color_manual(values = valence_colors) +
+  scale_y_continuous(limits = c(0, y_max)) +
+  labs(title = "There were a smaller number of events in 2022, with disparities between \nleft- and right-wing events reduced but still favoring the left.",
+       x = "Date",
+       y = "Number of Protests",
+       caption = "Data source: Crowd Counting Consortium, crowdcounting.org, accessed March 2025") +
+  custom_theme +
+  theme(legend.position = "none", 
+        axis.title.x = element_blank())
+```
+
+```{r echo=FALSE}
+library(wordcloud2)
+data_combined <- ccc %>%
+  filter(yyyy %in% c('2018','2020','2022','2024'), !is.na(valence), issues != "", claims != "") %>%
+  count(yyyy, issues, valence) %>%
+  group_by(yyyy, issues) %>%
+  summarise(n = sum(n), .groups = 'drop') %>%
+  arrange(desc(n))
+
+create_wordcloud <- function(year) {
+  word_data <- data_combined %>%
+    filter(yyyy == year) %>%
+    select(issues, n)
+
+  if (nrow(word_data) > 0) {
+    return(wordcloud2(word_data, size = 1))
+  } else {
+    return(wordcloud2(data.frame(issues = "No Data", n = 1), size = 1))
+  }
+}
+
+wc_2018 <- create_wordcloud("2018")
+wc_2020 <- create_wordcloud("2020")
+wc_2022 <- create_wordcloud("2022")
+wc_2024 <- create_wordcloud("2024")
+
+```
+
+
+<style>
+  .tab-container { display: flex; justify-content: center; margin-bottom: 20px; }
+  .tab { padding: 10px 20px; cursor: pointer; background: #ddd; margin: 5px; border-radius: 5px; }
+  .tab:hover { background: #bbb; }
+  .tab.active { background: #777; color: white; }
+  .wordcloud { display: none; text-align: center; }
+</style>
+
+<script>
+  function showWordCloud(year) {
+    let clouds = document.querySelectorAll(".wordcloud");
+    clouds.forEach(cloud => cloud.style.display = "none");
+    document.getElementById("wc_" + year).style.display = "block";
+
+    let tabs = document.querySelectorAll(".tab");
+    tabs.forEach(tab => tab.classList.remove("active"));
+    document.getElementById("tab_" + year).classList.add("active");
+  }
+</script>
+
+<div class="tab-container">
+  <div class="tab active" id="tab_2018" onclick="showWordCloud(2018)">2018</div>
+  <div class="tab" id="tab_2020" onclick="showWordCloud(2020)">2020</div>
+  <div class="tab" id="tab_2022" onclick="showWordCloud(2022)">2022</div>
+  <div class="tab" id="tab_2024" onclick="showWordCloud(2024)">2024</div>
+</div>
+
+<div id="wc_2018" class="wordcloud" style="display: block;">
+```{r}
+wc_2018
+```
+</div><div id="wc_2020" class="wordcloud">
+```{r}
+wc_2020
+```
+</div><div id="wc_2022" class="wordcloud">
+```{r}
+wc_2022
+```
+</div><div id="wc_2024" class="wordcloud">
+```{r}
+wc_2024
+```
+</div>
 ```

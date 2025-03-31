@@ -3,6 +3,7 @@ library(patchwork)
 library(ggthemes)
 library(tidyverse)
 library(patchwork)
+library(tidytext)
 
 ccc1 <- read.csv("data/ccc_compiled_20172020.csv")
 ccc1 <- ccc1 %>% 
