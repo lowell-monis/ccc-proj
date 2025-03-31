@@ -1,6 +1,6 @@
 ---
 title: "Midterm Momentum"
-subtitle: "Can Grassroots Energy Override Historical Trends?"
+subtitle: "Can street mobilization be an electoral barometer?"
 author: 
   - name: "Lowell Monis^[Michigan State University, monislow@msu.edu]"
 
@@ -8,7 +8,7 @@ date: "March 31, 2025"
 
 output:
   html_document: 
-    theme: "lumen"  # Choose from default themes like default, cerulean, journal, flatly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, yeti
+    theme: "flatly"  # Choose from default themes like default, cerulean, journal, flatly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, yeti
     highlight: "tango"  # Code syntax highlighting style (default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, breezedark, textmate)
     
     
@@ -25,14 +25,10 @@ output:
     number_sections: false
     df_print: "paged"  # (paged, default, tibble)
 
-# Bibliography and Citations (Optional)
-#bibliography: references.bib  # Path to your BibTeX file
-#csl: apa.csl  # Citation Style Language file
+bibliography: biblio.bib  # Path to your BibTeX file
 
-# Advanced Customization
 params:
   version: 1.0
-# data_source: "path/to/data"
 
 tags: 
   - "data-science"
@@ -56,8 +52,6 @@ keywords:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=TRUE, message = FALSE, error = FALSE, warning = FALSE)
 ```
-
-Or more importantly, can street mobilization be an electoral weathervane?
 
 ```{r echo=FALSE}
 library(downloadthis)
@@ -179,7 +173,7 @@ issue_plot <- ggplot(issue_counts_filtered,
                                "2" = "Right-wing")) +
   scale_x_reordered() +
   coord_flip() +
-  labs(title = "There has been a significant shift in issues alongside changes \nin partisan involvement reflective of the national mood in protests.",
+  labs(title = "There has been a significant shift in issues alongside changes \nin partisan involvement reflective of the national mood \nin protests.",
        x = "Issue",
        y = "Number of Events",
        fill = "Political Alignment",
@@ -282,7 +276,7 @@ election2020 <- ggplot(data2020, aes(x = date, color = factor(valence))) +
            family='serif')  +
   scale_color_manual(values = valence_colors) +
   scale_y_continuous(limits = c(0, y_max)) +
-  labs(title = "There were a smaller number of events in 2022, with disparities between \nleft- and right-wing events reduced but still favoring the left.",
+  labs(title = "The pandemic blunted contentious politics in 2020, but racial tension \n reversed this trend quickly,",
        x = "Date",
        y = "Number of Protests",
        caption = "Data source: Crowd Counting Consortium, crowdcounting.org, accessed March 2025") +
@@ -301,7 +295,7 @@ election2024 <- ggplot(data2024, aes(x = date, color = factor(valence))) +
            family='serif')  +
   scale_color_manual(values = valence_colors) +
   scale_y_continuous(limits = c(0, y_max)) +
-  labs(title = "There were a smaller number of events in 2022, with disparities between \nleft- and right-wing events reduced but still favoring the left.",
+  labs(title = "2024 saw localised surges in right-wing mobilization.",
        x = "Date",
        y = "Number of Protests",
        caption = "Data source: Crowd Counting Consortium, crowdcounting.org, accessed March 2025") +
@@ -338,49 +332,74 @@ wc_2024 <- create_wordcloud("2024")
 
 ```
 
+Midterm elections in the U.S. are often a referendum on the party in power, with the out-party typically gaining seats. But what happens when protest movements---spontaneous, ideologically charged, and highly visible---disrupt historical trends? The 2018 and 2022 midterms, followed by the 2020 and 2024 presidential cycles, offer a fascinating case study. While polls and economic indicators dominate electoral forecasting, protest activity provides a real-time pulse of the national mood, sometimes foreshadowing unexpected outcomes.
 
-<style>
-  .tab-container { display: flex; justify-content: center; margin-bottom: 20px; }
-  .tab { padding: 10px 20px; cursor: pointer; background: #ddd; margin: 5px; border-radius: 5px; }
-  .tab:hover { background: #bbb; }
-  .tab.active { background: #777; color: white; }
-  .wordcloud { display: none; text-align: center; }
-</style>
+This analysis leverages protest data from the Crowd Counting Consortium (2017–2024) (@DVN/6OPP7H_2025, @DVN/9MMYDI_2025) to argue that the valence (left/right lean) and focus of mass mobilization can override traditional midterm dynamics. Notably, while left-leaning protests have consistently outnumbered right-leaning ones since 2017, shifts in right-wing mobilization may signal electoral momentum for Republicans.
 
-<script>
-  function showWordCloud(year) {
-    let clouds = document.querySelectorAll(".wordcloud");
-    clouds.forEach(cloud => cloud.style.display = "none");
-    document.getElementById("wc_" + year).style.display = "block";
+# The Blue Wave
 
-    let tabs = document.querySelectorAll(".tab");
-    tabs.forEach(tab => tab.classList.remove("active"));
-    document.getElementById("tab_" + year).classList.add("active");
-  }
-</script>
+In 2018, the Democratic Party flipped 41 House seats, fueled by anti-Trump sentiment and a surge in progressive activism that led to the launch of the "Squad" into Congress and resulted in major primary losses for "old-guard" Democrats, including House Democrats chair Joe Crowley (@nytimes2018). Protest data from that year reveals a diffuse but energetic left-wing mobilization: demonstrations targeted immigration (family separations), healthcare (ACA repeal attempts), and by a large margin, gun reform. Figure 1 shows the distribution of protest issues in 2018.
 
-<div class="tab-container">
-  <div class="tab active" id="tab_2018" onclick="showWordCloud(2018)">2018</div>
-  <div class="tab" id="tab_2020" onclick="showWordCloud(2020)">2020</div>
-  <div class="tab" id="tab_2022" onclick="showWordCloud(2022)">2022</div>
-  <div class="tab" id="tab_2024" onclick="showWordCloud(2024)">2024</div>
-</div>
-
-<div id="wc_2018" class="wordcloud" style="display: block;">
-```{r}
+```{r echo=FALSE, results='asis', fig.cap='Figure 1'}
+cat("#### 2018 Protest Issues\n")
 wc_2018
 ```
-</div><div id="wc_2020" class="wordcloud">
-```{r}
-wc_2020
+Meanwhile, right-leaning protests were lean in number in 2018 as seen in Figure 2---a stark contrast to future years.
+```{r echo=FALSE, fig.cap='Figure 2'}
+midterm2018
 ```
-</div><div id="wc_2022" class="wordcloud">
-```{r}
+# The Backlash That Broke A Red Wave
+
+Historical trends pointed to a Republican landslide in 2022: Biden’s approval ratings languished, inflation soared, and midterms typically punish the incumbent party (@vox2022). Yet the GOP’s expected "red wave" collapsed, resulting in a razor-thin House majority and Democratic Senate gains. Protest data tells the story.
+
+The Supreme Court’s Dobbs decision (June 2022) triggered a seismic shift. Left-leaning protests exploded, with abortion rights becoming the dominant issue overnight. Figure 3 highlights the spike in abortion-related demonstrations post-Dobbs, which dwarfed right-wing activity.
+
+```{r echo=FALSE, fig.cap='Figure 3'}
+midterm2022
+```
+
+Unlike 2018’s scattered focus, 2022’s protests were laser-targeted, galvanizing women and young voters. Swing states like Michigan and Pennsylvania saw record midterm turnout, with abortion ballot measures driving engagement. Meanwhile, right-wing mobilization---though present---failed to match the left’s intensity.
+
+```{r echo=FALSE, fig.cap='Figure 4'}
+issue_plot
+```
+```{r echo=FALSE, fig.cap='Figure 5', results='asis'}
+cat("\n#### 2022 Protest Issues\n")
 wc_2022
 ```
-</div><div id="wc_2024" class="wordcloud">
-```{r}
+# What about presidential years?
+
+Extending the analysis to presidential cycles reveals nuances:
+
+In 2020, the COVID-19 pandemic suppressed protest activity overall, but left-wing movements (e.g., racial justice protests after George Floyd’s killing) still dominated. The sole major right-leaning mobilization were anti-lockdown rallies. As we know, Democrats swept the election with the largest number of votes ever cast for a single candidate.
+
+```{r echo=FALSE, fig.cap='Figure 6'}
+election2020
+```
+```{r echo=FALSE, results='asis', fig.cap='Figure 7'}
+cat("\n#### 2020 Protest Issues\n")
+wc_2020
+```
+
+2024 data shows a notable rise in right-wing activity. While left-wing protests remain more frequent, there was a relative increase in conservative mobilization. With Republicans winning this election considerably, with a large swing towards Republicans (which is a result that should be taken with a grain of salt considering the large swing left in the 2020 election), the increases in right-leaning protest activity is acting like a predictor for Republican gains.
+
+```{r echo=FALSE, fig.cap='Figure 8'}
+election2024
+```
+
+```{r echo=FALSE, results='asis', fig.cap='Figure 9'}
+cat("\n#### 2024 Protest Issues\n")
 wc_2024
 ```
-</div>
-```
+
+This aligns with my proposition: absolute left-wing dominance in protest numbers may not predict outcomes alone, but surges in right-wing activity could signal Republican electoral gains. One can also note that left-wing mobilization is nearly constant, while right-wing mobilization drops significantly when a Republican is an incumbent.
+
+# Limitations and Caveats
+
+Two key caveats temper these insights. The data covers only 2017–2024, a period skewed toward Democratic overperformance in 3 of 4 federal elections. The data also includes multiple outlier election cycles that were unprecedented and rare in American history, with the COVID-19 pandemic raging on in 2020, and a presumptive nominee dropping out mid-cycle in 2024. Additionally, single-issue movements (e.g., abortion) may mobilize voters more effectively than diffuse grievances. 
+
+# Why Protests Might Outperform Polls
+
+Polls often lag behind real-time sentiment, but protests capture intensity---a critical factor in voter turnout. Left-wing protests were consistently more numerous, but electoral impact depends on issue salience. On the other hand, right-Wing surges, even if smaller, may foreshadow GOP momentum. For analysts, tracking protest volume, valence, and issue focus could complement traditional metrics. This lays the groundwork for interesting insights, and with more historical data, we can determine the legitimacy of this theory. 
+
+# References
