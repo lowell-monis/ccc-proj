@@ -13,21 +13,18 @@ output:
     theme: "readable"  # Choose from default themes like default, cerulean, journal, flatly, readable, spacelab, united, cosmo, lumen, paper, sandstone, simplex, yeti
     highlight: "tango"  # Code syntax highlighting style (default, tango, pygments, kate, monochrome, espresso, zenburn, haddock, breezedark, textmate)
     
-    # Layout and Formatting
-    toc: true  # Table of Contents
-    toc_depth: 3  # Depth of headers to include in TOC
+    toc: true 
+    toc_depth: 3
     toc_float: 
-      collapsed: false  # Makes TOC float alongside content
-      smooth_scroll: true  # Smooth scrolling to TOC sections
+      collapsed: false
+      smooth_scroll: true
     
-    # Code Handling
-    code_folding: "show"  # Options: "none", "show", "hide"
+    code_folding: "hide"  # Options: "none", "show", "hide"
     code_download: true  # Adds a download button for R code
     
-    # Additional Rendering Options
-    self_contained: true  # Creates a single HTML file with all dependencies
-    number_sections: false  # Adds numeric prefixes to sections
-    df_print: "paged"  # How data frames are printed (paged, default, tibble)
+    self_contained: true
+    number_sections: false
+    df_print: "paged"  # (paged, default, tibble)
 
 # Bibliography and Citations (Optional)
 #bibliography: references.bib  # Path to your BibTeX file
@@ -38,15 +35,47 @@ params:
   version: 1.0
 # data_source: "path/to/data"
 
-# Supplementary Metadata
 tags: 
   - "data-science"
-  - "r-markdown"
-  - "blogging"
+  - "electoral-politics"
+  - "elections"
+  - "politics"
+  - "american-politics"
+  - "midterms"
+  - "democrat"
+  - "republican"
+  - "partisan"
+  - "blog"
 
 keywords:
   - "reproducible research"
-  - "data visualization"
+  - "graphic detail"
+  - "elections"
+  - "American politics"
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, message = FALSE, error = FALSE, warning = FALSE)
+```
+
 Or more importantly, can street mobilization be an electoral weathervane?
+
+```{r echo=FALSE}
+library(downloadthis)
+download_link(
+  link = "https://lowell-monis.github.io/ccc-proj/midterm-momentum.pdf",
+  button_label = "View Graphic Detail",
+  button_type = "primary",
+  has_icon = TRUE,
+  icon = "fa-solid fa-folder-open",
+  self_contained = TRUE
+)
+download_link(
+  link = "https://github.com/lowell-monis/ccc-proj/raw/main/midterm-momentum.pdf",
+  button_label = "Download Graphic Detail",
+  button_type = "primary",
+  has_icon = TRUE,
+  icon = "fa-solid fa-download",
+  self_contained = TRUE
+)
+```
